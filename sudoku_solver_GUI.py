@@ -6,6 +6,8 @@ import copy
 import os
 
 
+sys.setrecursionlimit(1000000)
+
 class stack:
     def __init__(self) -> None:
         self.stack = []

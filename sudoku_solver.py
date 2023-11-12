@@ -1,6 +1,8 @@
 import copy
 import os
+import sys
 
+sys.setrecursionlimit(1000000)
 
 class stack:
     def __init__(self) -> None:
