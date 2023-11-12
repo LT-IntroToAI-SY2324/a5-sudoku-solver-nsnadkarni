@@ -6,7 +6,7 @@ import copy
 import os
 
 
-sys.setrecursionlimit(1000000)
+sys.setrecursionlimit(10000)
 
 class stack:
     def __init__(self) -> None:
@@ -21,8 +21,7 @@ class stack:
         try:
             return self.stack.pop(0)
         except:
-            return "Impossible to solve!"
-
+            quit()
         
 
 class board:
