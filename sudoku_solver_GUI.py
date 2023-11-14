@@ -8,6 +8,7 @@ import os
 
 sys.setrecursionlimit(1000000000)
 
+
 class stack:
     def __init__(self) -> None:
         self.stack = []
@@ -29,6 +30,9 @@ class board:
         self.boardvis = [[-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1]]
         self.boardback =[[list(range(1, 10)) for _ in range(9)] for _ in range(9)]
         self.boardsquare = [[1, 1, 1, 2, 2, 2, 3, 3, 3], [1, 1, 1, 2, 2, 2, 3, 3, 3], [1, 1, 1, 2, 2, 2, 3, 3, 3], [4, 4, 4, 5, 5, 5, 6, 6, 6], [4, 4, 4, 5, 5, 5, 6, 6, 6], [4, 4, 4, 5, 5, 5, 6, 6, 6], [7, 7, 7, 8, 8, 8, 9, 9, 9], [7, 7, 7, 8, 8, 8, 9, 9, 9], [7, 7, 7, 8, 8, 8, 9, 9, 9]]
+        self.selected_cell = None
+        self.green = 255
+        self.red = 255
         pass
 
     def __str__(self) -> str:
@@ -63,6 +67,7 @@ class board:
         return(strBuild)
     
     def place(self, row, col, num):
+        self.selected_cell = (row, col)
         self.fixrow(row, num)
         self.fixcol(col, num)
         self.fixsquare(row, col, num)
@@ -146,8 +151,12 @@ class board:
             pass
         LEN = len(self.boardback[ROW][COL])
         if LEN == 1:
+            self.green = 255
+            self.red = 0
             self.place(ROW, COL, VAL)
         elif LEN == 0:
+            self.green = 0
+            self.red = 255
             e = sta.get_del()
             if isinstance(e, list):
                 print(e[0])
@@ -167,6 +176,8 @@ class board:
                 print("Impossible to solve!")
                 quit()
         else:
+            self.green = 0
+            self.red = 255
             VAL = self.boardback[ROW][COL][0]
             #print(brd)
             sta.add([copy.deepcopy(self.boardback), copy.deepcopy(self.boardvis[:]), ROW, COL, VAL, ID])
@@ -175,11 +186,11 @@ class board:
         os.system("clear")
         screen.fill(WHITE)
         draw_grid()
-        draw_numbers()
         draw_selected_cell()
+        draw_numbers()
         pygame.display.flip()
 
-        # time.sleep(0.1) # Uncomment for delay in moves
+        # time.sleep(0.02) # Uncomment for delay in moves
 
         while not self.is_over():
             self.solve(sta, ID + 1)
@@ -208,20 +219,23 @@ def draw_grid():
         pygame.draw.line(screen, BLACK, (0, i * CELL_SIZE), (WIDTH, i * CELL_SIZE), line_width)
         pygame.draw.line(screen, BLACK, (i * CELL_SIZE, 0), (i * CELL_SIZE, HEIGHT), line_width)
 
+def draw_selected_cell():
+    if selected is not None:
+        row, col = selected
+        pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE), 2)
+
 def draw_numbers():
     for row in range(GRID_SIZE):
         for col in range(GRID_SIZE):
             num = brd.boardvis[row][col]
             if num != -1:
+                if brd.selected_cell is not None and (row, col) == brd.selected_cell:
+                    pygame.draw.rect(screen, (brd.red, brd.green, 0), pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
                 text = FONT.render(str(num), True, BLACK)
                 text_rect = text.get_rect()
                 text_rect.center = (col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2)
                 screen.blit(text, text_rect)
 
-def draw_selected_cell():
-    if selected is not None:
-        row, col = selected
-        pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE), 2)
 
 def solve_sudoku():
     brd.solve(sta, 0)
