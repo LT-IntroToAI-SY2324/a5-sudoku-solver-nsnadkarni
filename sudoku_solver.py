@@ -169,7 +169,7 @@ class board:
             sta.add([copy.deepcopy(self.boardback), copy.deepcopy(self.boardvis[:]), ROW, COL, VAL, ID])
             self.place(ROW, COL, VAL)
 
-        os.system("clear")
+        # os.system("cls")
         print(brd)
         while not self.is_over():
             self.solve(sta, ID + 1)
