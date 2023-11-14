@@ -183,7 +183,7 @@ class board:
             sta.add([copy.deepcopy(self.boardback), copy.deepcopy(self.boardvis[:]), ROW, COL, VAL, ID])
             self.place(ROW, COL, VAL)
 
-        os.system("clear")
+        # os.system("cls")
         screen.fill(WHITE)
         draw_grid()
         draw_selected_cell()
