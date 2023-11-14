@@ -32,7 +32,7 @@ class board:
         self.boardsquare = [[1, 1, 1, 2, 2, 2, 3, 3, 3], [1, 1, 1, 2, 2, 2, 3, 3, 3], [1, 1, 1, 2, 2, 2, 3, 3, 3], [4, 4, 4, 5, 5, 5, 6, 6, 6], [4, 4, 4, 5, 5, 5, 6, 6, 6], [4, 4, 4, 5, 5, 5, 6, 6, 6], [7, 7, 7, 8, 8, 8, 9, 9, 9], [7, 7, 7, 8, 8, 8, 9, 9, 9], [7, 7, 7, 8, 8, 8, 9, 9, 9]]
         self.selected_cell = None
         self.green = 255
-        self.red = 255
+        self.red = 0
         pass
 
     def __str__(self) -> str:
@@ -176,7 +176,7 @@ class board:
                 print("Impossible to solve!")
                 quit()
         else:
-            self.green = 0
+            self.green = 255
             self.red = 255
             VAL = self.boardback[ROW][COL][0]
             #print(brd)
